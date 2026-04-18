@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calyx</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --navy-mid: #243156;
+  --navy-light: #2e3d6b;
+  --green: #1b4332;
+  --green-mid: #2d6a4f;
+  --green-accent: #52b788;
+  --green-pale: #d8f3dc;
+  --blue-tint: #f0f4ff;
+  --blue-tint2: #e8eef8;
+  --white: #ffffff;
+  --text-dark: #1a2744;
+  --text-mid: #4a5568;
+  --text-light: #8896b3;
+  --border: #e2e8f0;
+  --gold: #f59e0b;
+  --gold-light: #fef3c7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--white); color: var(--text-dark); overflow-x: hidden; }
+
+/* NAV */
+.nav-wrap { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; padding: 16px 24px; }
+nav { background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 50px; padding: 10px 10px 10px 24px; display: flex; align-items: center; gap: 24px; box-shadow: 0 4px 24px rgba(26,39,68,0.08); width: 100%; max-width: 900px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
+.nav-logo-dot { width: 28px; height: 28px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.nav-logo-dot svg { width: 14px; height: 14px; fill: var(--green-pale); }
+.nav-brand { font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; }
+.nav-links { display: flex; align-items: center; gap: 22px; flex: 1; justify-content: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--navy); }
+.nav-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.btn-outline { padding: 9px 20px; border-radius: 50px; border: 1.5px solid var(--border); background: transparent; font-size: 14px; font-weight: 500; color: var(--navy); text-decoration: none; }
+.btn-outline:hover { border-color: var(--navy); }
+.btn-dark { padding: 9px 22px; border-radius: 50px; background: var(--navy); font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; }
+.btn-dark:hover { background: var(--navy-light); }
+
+/* PROMO BANNER */
+.promo-banner { background: var(--green); padding: 12px 24px; text-align: center; padding-top: 72px; }
+.promo-banner p { font-size: 14px; color: var(--green-pale); font-weight: 500; }
+.promo-banner strong { color: var(--white); }
+
+/* HERO */
+.hero { min-height: 100vh; background: var(--navy); display: flex; align-items: center; padding: 100px 24px 80px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -300px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: rgba(82,183,136,0.06); }
+.hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(82,183,136,0.15); border: 1px solid rgba(82,183,136,0.3); color: var(--green-accent); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 50px; margin-bottom: 28px; }
+.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-accent); }
+.hero h1 { font-size: clamp(40px, 5.5vw, 64px); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 24px; }
+.hero h1 span { color: var(--green-accent); }
+.hero-sub { font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 16px; max-width: 480px; }
+.hero-price { font-size: 15px; color: var(--green-accent); font-weight: 600; margin-bottom: 36px; }
+.hero-price span { color: var(--white); font-size: 20px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-hero-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--white); color: var(--navy); font-size: 15px; font-weight: 700; border-radius: 50px; text-decoration: none; transition: transform 0.2s; }
+.btn-hero-primary:hover { transform: translateY(-2px); }
+.btn-hero-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; color: var(--white); font-size: 15px; font-weight: 500; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; }
+
+/* STATS GRID */
+.stats-grid { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 24px; padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.stat-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px 20px; }
+.stat-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.stat-icon svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.7); fill: none; stroke-width: 1.5; }
+.stat-num { font-size: 36px; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.stats-trust { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-top: 4px; }
+.trust-avatars { display: flex; }
+.trust-avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--navy); margin-right: -8px; background: var(--green-mid); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--white); }
+.trust-text { font-size: 13px; color: rgba(255,255,255,0.6); margin-left: 16px; }
+.trust-text strong { color: var(--white); }
+
+/* NETWORK BAR */
+.network-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 28px 24px; }
+.network-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.network-label { font-size: 12px; font-weight: 700; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; }
+.network-partners { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+.network-partner { font-size: 16px; font-weight: 700; color: var(--text-mid); letter-spacing: -0.01em; }
+.network-partner span { color: var(--green-mid); }
+
+/* SECTIONS */
+section { padding: 100px 24px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.pill-label { display: inline-block; border: 1px solid var(--border); border-radius: 50px; padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--text-mid); margin-bottom: 24px; }
+.pill-label-light { display: inline-block; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 6px 16px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); margin-bottom: 24px; }
+.pill-label-gold { display: inline-block; border: 1px solid var(--gold); border-radius: 50px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 24px; background: var(--gold-light); }
+.section-title { font-size: clamp(32px, 4vw, 52px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; color: var(--navy); }
+.section-title-light { color: var(--white); }
+.section-sub { font-size: 17px; color: var(--text-mid); line-height: 1.7; max-width: 580px; margin: 0 auto; }
+.section-sub-light { color: rgba(255,255,255,0.6); }
+.text-center { text-align: center; }
+
+/* SWITCHING PROMO */
+.switch { background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%); }
+.switch-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.switch-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(216,243,220,0.15); border: 1px solid rgba(216,243,220,0.3); color: var(--green-pale); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-bottom: 20px; }
+.switch h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+.switch p { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 28px; }
+.switch-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 36px; }
+.switch-amount { font-size: 80px; font-weight: 800; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+.switch-sub { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+.code-box { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.25); border-radius: 14px; padding: 16px 20px; margin: 20px 0; text-align: center; cursor: pointer; }
+.code-box:hover { background: rgba(255,255,255,0.12); }
+.code-label { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.code-text { font-size: 32px; font-weight: 800; color: var(--white); letter-spacing: 0.08em; }
+.code-copy { font-size: 12px; color: var(--green-accent); margin-top: 6px; font-weight: 500; }
+.switch-conditions { display: flex; flex-direction: column; gap: 10px; }
+.switch-condition { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7); }
+.switch-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-accent); flex-shrink: 0; }
+.btn-switch { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--white); color: var(--green); font-size: 15px; font-weight: 700; border-radius: 50px; text-decoration: none; transition: transform 0.2s; margin-top: 28px; }
+.btn-switch:hover { transform: translateY(-2px); }
+
+/* HOW IT WORKS */
+.how { background: var(--blue-tint); }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+.how-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 32px 28px; transition: transform 0.2s; }
+.how-card:hover { transform: translateY(-4px); }
+.how-icon { width: 48px; height: 48px; background: var(--blue-tint2); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.how-icon svg { width: 22px; height: 22px; stroke: var(--navy); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.step-num { font-size: 12px; font-weight: 700; color: var(--green-accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.how-card h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 10px; letter-spacing: -0.02em; }
+.how-card p { font-size: 15px; color: var(--text-mid); line-height: 1.7; }
+
+/* WHY CHEAP */
+.why-cheap { background: var(--white); }
+.why-cheap-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.why-points { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+.why-point { display: flex; gap: 14px; align-items: flex-start; background: var(--blue-tint); border-radius: 14px; padding: 16px 18px; }
+.why-point-icon { width: 36px; height: 36px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border); }
+.why-point-icon svg { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2; stroke-linecap: round; }
+.why-point-text h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+.why-point-text p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+.why-visual { background: var(--navy); border-radius: 28px; padding: 44px 40px; }
+.why-stat { font-size: 80px; font-weight: 800; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+.why-label { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+.why-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 24px 0; }
+.why-stat2 { font-size: 52px; font-weight: 800; color: var(--green-accent); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+
+/* PRICING - 3 cards */
+.pricing { background: var(--blue-tint); }
+.pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+.pricing-card { background: var(--navy); border-radius: 24px; padding: 36px 32px; position: relative; }
+.pricing-card.featured { border: 2px solid var(--green-accent); }
+.featured-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--green-accent); color: var(--green); font-size: 12px; font-weight: 700; padding: 4px 16px; border-radius: 20px; white-space: nowrap; }
+.plan-name { font-size: 13px; font-weight: 700; color: var(--green-accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.plan-drug { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 4px; letter-spacing: -0.02em; }
+.plan-equiv { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+.plan-price { font-size: 56px; font-weight: 800; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+.plan-period { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+.plan-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 24px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; }
+.plan-includes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.plan-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.7); }
+.check-sm { width: 18px; height: 18px; border-radius: 50%; background: rgba(82,183,136,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.check-sm svg { width: 9px; height: 9px; stroke: var(--green-accent); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.btn-plan { display: block; text-align: center; padding: 12px; background: rgba(255,255,255,0.1); color: var(--white); font-size: 14px; font-weight: 600; border-radius: 14px; text-decoration: none; transition: background 0.2s; }
+.btn-plan:hover { background: rgba(255,255,255,0.18); }
+.btn-plan-featured { background: var(--green-accent); color: var(--green); }
+.btn-plan-featured:hover { background: #74c69d; }
+
+/* BNPL */
+.bnpl { background: var(--white); }
+.bnpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.bnpl-card { background: var(--blue-tint); border: 1px solid var(--border); border-radius: 20px; padding: 32px 28px; text-align: center; }
+.bnpl-logo { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+.bnpl-card p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+/* REWARDS */
+.rewards { background: var(--navy); }
+.rewards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+.reward-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 28px; }
+.reward-card h3 { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.02em; }
+.reward-card p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.reward-highlight { color: var(--green-accent); font-weight: 600; }
+
+/* WEIGHT REWARDS */
+.weight-rewards { background: var(--blue-tint); }
+.weight-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+.tier-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px 16px; text-align: center; }
+.tier-lbs { font-size: 20px; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 4px; }
+.tier-rate { font-size: 28px; font-weight: 800; color: var(--green-mid); letter-spacing: -0.02em; margin-bottom: 4px; }
+.tier-earn { font-size: 13px; color: var(--green-accent); font-weight: 600; margin-bottom: 2px; }
+.tier-label { font-size: 12px; color: var(--text-light); }
+.weight-cap { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; margin-top: 20px; font-size: 14px; color: var(--text-mid); line-height: 1.6; text-align: center; }
+.weight-cap strong { color: var(--navy); }
+
+/* REFERRAL */
+.referral { background: var(--white); }
+.referral-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.referral-card { border-radius: 20px; padding: 32px 28px; text-align: center; }
+.referral-card.tier1 { background: var(--blue-tint); border: 1px solid var(--border); }
+.referral-card.tier2 { background: var(--navy); }
+.referral-card.tier3 { background: var(--green); }
+.referral-num { font-size: 52px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+.tier1 .referral-num { color: var(--navy); }
+.tier2 .referral-num { color: var(--green-accent); }
+.tier3 .referral-num { color: var(--green-pale); }
+.referral-friends { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 16px; }
+.tier1 .referral-friends { color: var(--text-mid); }
+.tier2 .referral-friends { color: rgba(255,255,255,0.5); }
+.tier3 .referral-friends { color: rgba(216,243,220,0.6); }
+.referral-prize { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+.tier1 .referral-prize { color: var(--navy); }
+.tier2 .referral-prize { color: var(--white); }
+.tier3 .referral-prize { color: var(--white); }
+.referral-desc { font-size: 13px; line-height: 1.5; }
+.tier1 .referral-desc { color: var(--text-mid); }
+.tier2 .referral-desc { color: rgba(255,255,255,0.5); }
+.tier3 .referral-desc { color: rgba(216,243,220,0.6); }
+
+/* PARTNER */
+.partner { background: var(--blue-tint); }
+.partner-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.partner-types { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
+.partner-type { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 14px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+.partner-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-accent); flex-shrink: 0; }
+.partner-card { background: var(--navy); border-radius: 24px; padding: 40px; }
+.partner-earn { font-size: 72px; font-weight: 800; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+.partner-earn-label { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+.partner-perks { display: flex; flex-direction: column; gap: 12px; }
+.partner-perk { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); }
+.perk-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(82,183,136,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.perk-check svg { width: 10px; height: 10px; stroke: var(--green-accent); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* CARE SUITE */
+.care { background: var(--white); }
+.care-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.care-card { background: var(--blue-tint); border: 1px solid var(--border); border-radius: 20px; padding: 28px; }
+.care-icon { width: 44px; height: 44px; background: var(--white); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; border: 1px solid var(--border); }
+.care-icon svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.care-card h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.care-card p { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+
+/* COMMUNITY */
+.community { background: var(--navy); }
+.community-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.community-features { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.community-feature { display: flex; gap: 14px; align-items: flex-start; }
+.cf-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cf-icon svg { width: 16px; height: 16px; stroke: var(--green-accent); fill: none; stroke-width: 1.5; }
+.cf-text h4 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.cf-text p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.community-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 36px; }
+.community-card h3 { font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.community-card p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 24px; }
+.btn-discord { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #5865F2; color: var(--white); font-size: 14px; font-weight: 600; border-radius: 50px; text-decoration: none; }
+
+/* TESTIMONIALS */
+.testimonials { background: var(--blue-tint); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.testimonial-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 28px; }
+.testimonial-stars { color: var(--gold); font-size: 14px; margin-bottom: 12px; }
+.testimonial-text { font-size: 15px; color: var(--text-dark); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green-mid); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--white); }
+.testimonial-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+.testimonial-detail { font-size: 12px; color: var(--text-light); }
+
+/* FAQ */
+.faq { background: var(--white); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; }
+.faq-item { background: var(--blue-tint); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
+.faq-q { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.faq-a { font-size: 14px; color: var(--text-mid); line-height: 1.75; }
+
+/* CTA */
+.cta-section { background: var(--navy); text-align: center; padding: 100px 24px; }
+.cta-section h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 800; color: var(--white); letter-spacing: -0.03em; margin-bottom: 20px; line-height: 1.1; }
+.cta-section p { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.btn-cta-primary { display: inline-flex; align-items: center; gap: 8px; padding: 15px 32px; background: var(--white); color: var(--navy); font-size: 16px; font-weight: 700; border-radius: 50px; text-decoration: none; transition: transform 0.2s; }
+.btn-cta-primary:hover { transform: translateY(-2px); }
+.btn-cta-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 15px 32px; background: transparent; color: var(--white); font-size: 16px; font-weight: 600; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; }
+.cta-note { font-size: 13px; color: rgba(255,255,255,0.4); }
+
+/* FOOTER */
+footer { background: #0f1e35; padding: 64px 24px 0; }
+.footer-top { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.footer-brand-name { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 12px; }
+.footer-tagline { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.6; max-width: 260px; margin-bottom: 24px; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600; }
+.footer-col h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: none; margin-bottom: 12px; }
+.footer-col a:hover { color: rgba(255,255,255,0.8); }
+.footer-bottom { max-width: 1100px; margin: 0 auto; padding: 28px 0; }
+.footer-disclaimer { font-size: 11px; color: rgba(255,255,255,0.2); line-height: 1.7; margin-bottom: 20px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+.footer-copy { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.footer-copy span { font-size: 13px; color: rgba(255,255,255,0.25); }
+
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-inner, .switch-inner, .why-cheap-inner, .partner-inner, .community-inner { grid-template-columns: 1fr; }
+  .stats-grid, .how-grid, .pricing-cards, .bnpl-grid, .rewards-grid, .weight-tiers, .referral-grid, .care-grid, .testimonials-grid, .faq-grid { grid-template-columns: 1fr; }
+  .partner-types { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .network-bar-inner { flex-direction: column; gap: 16px; }
+  section { padding: 64px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-dot"><svg viewBox="0 0 24 24"><path d="M12 2C12 2 7 7 7 12C7 16 9.5 19 12 21C14.5 19 17 16 17 12C17 7 12 2 12 2Z"/></svg></div>
+      <span class="nav-brand">calyx</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Plans</a>
+      <a href="#rewards">Rewards</a>
+      <a href="#referral">Refer & earn</a>
+      <a href="#partner">Partners</a>
+      <a href="#faq">FAQ</a>
+      <a href="creators.html" style="color:var(--green-accent);font-weight:600;">For Creators</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#switch" class="btn-outline">Switching?</a>
+      <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-dark">Get started</a>
+    </div>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><div class="hero-badge-dot"></div> A health plan benefit, not a pharmacy</div>
+      <h1>A health plan<br>built around <span>you.</span></h1>
+      <p class="hero-sub">Calyx is a cash-pay weight management benefit that connects you directly to licensed providers, labs, and medication — cutting out the middlemen that drive costs up.</p>
+      <p class="hero-price">Starting at <span>$199/month</span> — 5x less than brand-name</p>
+      <div class="hero-btns">
+        <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-hero-primary">Start today →</a>
+        <a href="#how" class="btn-hero-secondary">See how it works</a>
+      </div>
+    </div>
+    <div class="stats-grid fade-up">
+      <div class="stat-card">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg></div>
+        <div class="stat-num">5x</div>
+        <div class="stat-label">Cheaper than brand-name</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="stat-num">15%</div>
+        <div class="stat-label">Avg body weight lost</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="stat-num">$199</div>
+        <div class="stat-label">Starting per month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Online. No office visits.</div>
+      </div>
+      <div class="stats-trust">
+        <div class="trust-avatars">
+          <div class="trust-avatar">J</div>
+          <div class="trust-avatar" style="background:#1b4332">M</div>
+          <div class="trust-avatar" style="background:#2d6a4f">S</div>
+        </div>
+        <div class="trust-text" style="margin-left:16px"><strong>Real members.</strong> Real results.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NETWORK BAR -->
+<div class="network-bar">
+  <div class="network-bar-inner">
+    <div class="network-label">Calyx network</div>
+    <div class="network-partners">
+      <div class="network-partner">Lab<span>corp</span></div>
+      <div class="network-partner">Quest <span>Diagnostics</span></div>
+      <div class="network-partner">Largest <span>Compounding Pharmacy in the US</span></div>
+      <div class="network-partner">Licensed <span>Clinicians Specializing in Weight Loss</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SWITCHING PROMO -->
+<section class="switch" id="switch">
+  <div class="container">
+    <div class="switch-inner">
+      <div class="fade-up">
+        <div class="switch-badge">Limited time offer</div>
+        <h2>Unhappy with your results? Switch to Calyx.</h2>
+        <p>Already on GLP-1 treatment but not seeing the results — or paying too much? Switch to Calyx and get your first month at $100 off. Same active ingredient, better support, lower price.</p>
+        <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-switch">Claim your $100 off →</a>
+      </div>
+      <div class="switch-card fade-up">
+        <div style="font-size:12px;font-weight:700;color:var(--green-accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Switch & save</div>
+        <div class="switch-amount">$100</div>
+        <div class="switch-sub">off your first month</div>
+        <div class="code-box" onclick="navigator.clipboard.writeText('SWITCH100');this.querySelector('.code-copy').textContent='Copied ✓';">
+          <div class="code-label">Use code at checkout</div>
+          <div class="code-text">SWITCH100</div>
+          <div class="code-copy">Click to copy</div>
+        </div>
+        <div class="switch-conditions">
+          <div class="switch-condition"><div class="switch-dot"></div>Valid for members on 5mg dose or higher</div>
+          <div class="switch-condition"><div class="switch-dot"></div>First month only</div>
+          <div class="switch-condition"><div class="switch-dot"></div>Same active ingredient as your current medication</div>
+          <div class="switch-condition"><div class="switch-dot"></div>Prescriber, coordination & shipping included</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">How it works</div>
+      <h2 class="section-title">Three steps to start.</h2>
+      <p class="section-sub">Prescriber, labs, coordination, and shipping all built in. You just show up.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card fade-up">
+        <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div class="step-num">Step 01</div>
+        <h3>Sign up online</h3>
+        <p>Get started in minutes. The Calyx team reaches out within 24 hours to coordinate your intake, baseline labs via Labcorp & Quest, and provider matching. No office visit needed.</p>
+      </div>
+      <div class="how-card fade-up">
+        <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="step-num">Step 02</div>
+        <h3>Provider review</h3>
+        <p>A licensed independent provider in our network reviews your intake and lab results, then issues your prescription. Fully coordinated — no extra fees, no back and forth.</p>
+      </div>
+      <div class="how-card fade-up">
+        <div class="how-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8l5 5-5 5"/><line x1="10" y1="16" x2="21" y2="16"/></svg></div>
+        <div class="step-num">Step 03</div>
+        <h3>Delivered to your door</h3>
+        <p>Your medication ships directly from the largest compounding pharmacy in the US — a licensed U.S. compounding pharmacy. Once-weekly self-injection, same delivery method as Ozempic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHEAP -->
+<section class="why-cheap">
+  <div class="container">
+    <div class="why-cheap-inner">
+      <div class="fade-up">
+        <div class="pill-label">Why so affordable</div>
+        <h2 class="section-title">We cut out the middlemen.<br>That's how.</h2>
+        <p style="font-size:16px;color:var(--text-mid);line-height:1.7;margin-bottom:8px;">Brand-name GLP-1 pricing is inflated by insurance markups, pharmacy benefit managers, and corporate overhead. Calyx connects you directly to providers and pharmacy — nothing in between.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-point-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="why-point-text"><h4>Network of independent local providers</h4><p>We partner with independent licensed physicians and NPs — cutting corporate overhead entirely.</p></div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <div class="why-point-text"><h4>Direct from a licensed compounding pharmacy</h4><p>Your medication is sourced from the largest compounding pharmacy in the US — shipping directly to your door with no middlemen involved.</p></div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="why-point-text"><h4>Cash pay — no insurance bureaucracy</h4><p>No claims. No denials. No surprise bills. Just transparent pricing you can count on every month.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual fade-up">
+        <div style="font-size:12px;font-weight:700;color:var(--green-accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Clinical outcomes</div>
+        <div class="why-stat">15%</div>
+        <div class="why-label">average body weight lost in trials</div>
+        <hr class="why-divider">
+        <div class="why-stat2">5x</div>
+        <div class="why-label">cheaper than brand-name GLP-1</div>
+        <hr class="why-divider">
+        <div style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.65;">Same active ingredients as Ozempic and Zepbound. Clinically equivalent — sourced from a licensed U.S. pharmacy. Prescriber, labs, coordination, and shipping all included in your plan.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">Plans & pricing</div>
+      <h2 class="section-title">Choose your plan.</h2>
+      <p class="section-sub">Two clinically proven options. Both include provider review, labs, and shipping. Pay cash — no insurance needed.</p>
+    </div>
+    <div class="pricing-cards fade-up">
+      <div class="pricing-card">
+        <div class="plan-name">Semaglutide</div>
+        <div class="plan-drug">Semaglutide Plan</div>
+        <div class="plan-equiv">Same active ingredient as Ozempic & Wegovy</div>
+        <div class="plan-price">$199</div>
+        <div class="plan-period">per month, starting dose</div>
+        <div class="plan-desc">A once-weekly self-injection that reduces appetite, slows digestion, and regulates blood sugar. FDA-approved active ingredient with 15% average body weight loss in clinical trials.</div>
+        <div class="plan-includes">
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Doses from 2.5mg–25mg available</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Provider review & prescription included</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Baseline labs via Labcorp & Quest</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Shipped from the largest compounding pharmacy in the US</div>
+        </div>
+        <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-plan">Get started →</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">Coming soon</div>
+        <div class="plan-name">Tirzepatide</div>
+        <div class="plan-drug">Tirzepatide Plan</div>
+        <div class="plan-equiv">Same active ingredient as Zepbound & Mounjaro</div>
+        <div class="plan-price">$249</div>
+        <div class="plan-period">per month, starting dose</div>
+        <div class="plan-desc">A dual GLP-1/GIP agonist — clinically shown to produce greater weight loss than semaglutide alone. The fastest-growing GLP-1 treatment in the market. Once-weekly self-injection.</div>
+        <div class="plan-includes">
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Doses from 2.5mg–15mg available</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Provider review & prescription included</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Baseline labs via Labcorp & Quest</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Shipped from the largest compounding pharmacy in the US</div>
+        </div>
+        <a href="mailto:ryan@mishe.com" class="btn-plan" style="opacity:0.6;cursor:default;">Notify me when live</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">Coming soon</div>
+        <div class="plan-name">Complete Care</div>
+        <div class="plan-drug">Complete Care Plan</div>
+        <div class="plan-equiv">Semaglutide or Tirzepatide + full support</div>
+        <div class="plan-price">$299</div>
+        <div class="plan-period">per month, starting dose</div>
+        <div class="plan-desc">Everything in the standard plan, plus certified nutrition coaching, virtual primary care check-ins, and priority concierge support. The complete Calyx experience.</div>
+        <div class="plan-includes">
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Choice of Semaglutide or Tirzepatide</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Certified nutritionist access</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Virtual primary care check-ins</div>
+          <div class="plan-item"><div class="check-sm"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Priority concierge support</div>
+        </div>
+        <a href="mailto:ryan@mishe.com" class="btn-plan" style="opacity:0.6;cursor:default;">Notify me when live</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BNPL -->
+<section class="bnpl">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">Care now, pay later</div>
+      <h2 class="section-title">Start today. Pay on your terms.</h2>
+      <p class="section-sub">Our financing partners share our desire to help you be the best you. Split payments with zero interest.</p>
+    </div>
+    <div class="bnpl-grid fade-up">
+      <div class="bnpl-card"><div class="bnpl-logo">Affirm</div><p>Split into 3, 6, or 12 monthly payments. No hidden fees, no surprises.</p></div>
+      <div class="bnpl-card"><div class="bnpl-logo">Klarna</div><p>Pay in 4 interest-free installments. Simple, flexible, and fast approval.</p></div>
+      <div class="bnpl-card"><div class="bnpl-logo">Afterpay</div><p>Four equal payments, every two weeks. Always interest-free.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REWARDS -->
+<section class="rewards" id="rewards">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label-light">Member rewards</div>
+      <h2 class="section-title section-title-light">We reward your results.</h2>
+      <p class="section-sub section-sub-light">Calyx members earn real rewards for real progress.</p>
+    </div>
+    <div class="rewards-grid fade-up">
+      <div class="reward-card">
+        <h3>Gym membership included</h3>
+        <p>As you progress toward your goal, Calyx includes a gym membership (up to <span class="reward-highlight">$50/month</span>) to help you build sustainable habits and eventually wean off medication naturally.</p>
+      </div>
+      <div class="reward-card">
+        <h3>Earn as you lose</h3>
+        <p>Every pound you lose earns you account credits — verified by our concierge team. The more progress you make, <span class="reward-highlight">the more you earn per pound.</span> Up to $200 total.</p>
+      </div>
+      <div class="reward-card">
+        <h3>Share your journey</h3>
+        <p>Tag @calyx.health and share your progress organically — we celebrate member milestones and feature real stories. <span class="reward-highlight">No obligation, just community.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEIGHT LOSS REWARDS -->
+<section class="weight-rewards">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label-gold">Earn as you lose</div>
+      <h2 class="section-title">Get paid to lose weight.</h2>
+      <p class="section-sub">Earn account credits for every verified pound lost — confirmed by our concierge team.</p>
+    </div>
+    <div class="weight-tiers fade-up">
+      <div class="tier-card">
+        <div class="tier-lbs">1–10 lbs</div>
+        <div class="tier-rate">$2/lb</div>
+        <div class="tier-earn">Earn up to $20</div>
+        <div class="tier-label">First milestone</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-lbs">10–20 lbs</div>
+        <div class="tier-rate">$5/lb</div>
+        <div class="tier-earn">Earn up to $50</div>
+        <div class="tier-label">Second milestone</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-lbs">20–30 lbs</div>
+        <div class="tier-rate">$10/lb</div>
+        <div class="tier-earn">Earn up to $100</div>
+        <div class="tier-label">Third milestone</div>
+      </div>
+    </div>
+    <div class="weight-cap fade-up"><strong>Total rewards: up to $200 per member</strong> — issued as account credits toward future months. Verified by Calyx concierge over a minimum 90-day active membership. Terms apply.</div>
+  </div>
+</section>
+
+<!-- REFERRAL -->
+<section class="referral" id="referral">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">Refer & earn</div>
+      <h2 class="section-title">Help those you love<br>get the care they need.</h2>
+      <p class="section-sub">Share Calyx with friends and family — and earn incredible rewards when they join.</p>
+    </div>
+    <div class="referral-grid fade-up">
+      <div class="referral-card tier1">
+        <div class="referral-num">1</div>
+        <div class="referral-friends">friend referred</div>
+        <div class="referral-prize">$10 credit</div>
+        <div class="referral-desc">Earn $10 account credit for every friend who joins Calyx.</div>
+      </div>
+      <div class="referral-card tier2">
+        <div class="referral-num">5</div>
+        <div class="referral-friends">friends referred</div>
+        <div class="referral-prize">Free Oura Ring</div>
+        <div class="referral-desc">Refer 5 friends and receive a free Oura Ring — the gold standard in health tracking.</div>
+      </div>
+      <div class="referral-card tier3">
+        <div class="referral-num">10</div>
+        <div class="referral-friends">friends referred</div>
+        <div class="referral-prize">6 Months Equinox</div>
+        <div class="referral-desc">Refer 10 friends and we'll cover 6 months of Equinox. On us.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER PROGRAM -->
+<section class="partner" id="partner">
+  <div class="container">
+    <div class="partner-inner">
+      <div class="fade-up">
+        <div class="pill-label">Distribution partners</div>
+        <h2 class="section-title">Earn $10 per member.<br>Every month.</h2>
+        <p style="font-size:16px;color:var(--text-mid);line-height:1.7;margin-bottom:8px;">Calyx partners with local businesses and care providers — trainers, salons, gyms, urgent care clinics, and more. Set up your own branded storefront and earn residual income for helping people get healthier.</p>
+        <div class="partner-types">
+          <div class="partner-type"><div class="partner-dot"></div>Personal trainers</div>
+          <div class="partner-type"><div class="partner-dot"></div>Beauty salons</div>
+          <div class="partner-type"><div class="partner-dot"></div>Urgent care clinics</div>
+          <div class="partner-type"><div class="partner-dot"></div>Primary care offices</div>
+          <div class="partner-type"><div class="partner-dot"></div>Gyms & studios</div>
+          <div class="partner-type"><div class="partner-dot"></div>Med spas</div>
+        </div>
+      </div>
+      <div class="partner-card fade-up">
+        <div style="font-size:12px;font-weight:700;color:var(--green-accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Partner earnings</div>
+        <div class="partner-earn">$10</div>
+        <div class="partner-earn-label">per member, per month — recurring</div>
+        <div class="partner-perks">
+          <div class="partner-perk"><div class="perk-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Your own branded Calyx storefront</div>
+          <div class="partner-perk"><div class="perk-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Residual income on every active Rx</div>
+          <div class="partner-perk"><div class="perk-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>No inventory. No fulfillment. No hassle.</div>
+          <div class="partner-perk"><div class="perk-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Expand to coordinate other treatments</div>
+          <div class="partner-perk"><div class="perk-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Help your community get healthier</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARE SUITE -->
+<section class="care">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">Complete care</div>
+      <h2 class="section-title">Everything your health needs.</h2>
+      <p class="section-sub">Calyx is more than medication. It's a complete wellness benefit built around your journey.</p>
+    </div>
+    <div class="care-grid fade-up">
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>Baseline labs included</h3>
+        <p>New members receive baseline labs ordered through our Labcorp & Quest network — giving providers a full clinical picture before treatment begins.</p>
+      </div>
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3>Nutrition & dietitian access</h3>
+        <p>Work with certified nutritionists to build sustainable habits that complement your treatment and maximize long-term results.</p>
+      </div>
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h3>Virtual primary care</h3>
+        <p>Access virtual primary care to monitor your baseline health, review labs, and keep your treatment plan optimized over time.</p>
+      </div>
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Concierge check-ins</h3>
+        <p>Our team checks in regularly — encouraging your progress, answering questions, and making sure you feel fully supported every step of the way.</p>
+      </div>
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Wean-off program</h3>
+        <p>When you're ready, Calyx includes a structured wean-off plan with a complimentary gym membership (up to $50/month) to help you maintain results independently.</p>
+      </div>
+      <div class="care-card">
+        <div class="care-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <h3>Ongoing medication management</h3>
+        <p>As your progress evolves, your provider adjusts your dose. Continuous care — not a one-time prescription and goodbye.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community">
+  <div class="container">
+    <div class="community-inner">
+      <div class="fade-up">
+        <div class="pill-label-light">Community</div>
+        <h2 class="section-title section-title-light">You're not doing this alone.</h2>
+        <p style="font-size:16px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:8px;">Calyx is building a community of people committed to real, lasting change — with expert guidance, peer support, and accountability built in.</p>
+        <div class="community-features">
+          <div class="community-feature">
+            <div class="cf-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="cf-text"><h4>Email & SMS check-ins</h4><p>Personalized check-ins, tips, and milestone celebrations delivered automatically.</p></div>
+          </div>
+          <div class="community-feature">
+            <div class="cf-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <div class="cf-text"><h4>Webinars with nutritionists</h4><p>Monthly webinars hosted by certified nutritionists, free for all Calyx members.</p></div>
+          </div>
+          <div class="community-feature">
+            <div class="cf-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="cf-text"><h4>Member community — coming soon</h4><p>A dedicated space for Calyx members to share their journey, ask questions, and support each other.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="community-card fade-up">
+        <h3>Stay in the loop</h3>
+        <p>The Calyx community is launching soon — including member groups, nutritionist webinars, and ongoing support. Members get early access automatically when they sign up.</p>
+        <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-hero-primary" style="display:inline-flex;margin-top:8px;">Join Calyx today →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">Member stories</div>
+      <h2 class="section-title">Real people. Real results.</h2>
+    </div>
+    <div class="testimonials-grid fade-up">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I'd been paying $900/month for Wegovy and barely seeing results. Switched to Calyx and I'm down 18 lbs in 3 months — at a fifth of the cost."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JM</div>
+          <div><div class="testimonial-name">Jessica M.</div><div class="testimonial-detail">Lost 18 lbs in 3 months</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The labs being included was huge for me — I'd never had baseline bloodwork done before. Calyx made the whole thing easy and I finally feel supported."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#1b4332">DK</div>
+          <div><div class="testimonial-name">David K.</div><div class="testimonial-detail">Lost 24 lbs in 4 months</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I was skeptical but the Tirzepatide plan has been incredible. My doctor approved it, it shipped in days, and I've lost more weight than I did on Ozempic."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#2d6a4f">SR</div>
+          <div><div class="testimonial-name">Sarah R.</div><div class="testimonial-detail">Lost 31 lbs in 5 months</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="pill-label">FAQ</div>
+      <h2 class="section-title">Common questions.</h2>
+    </div>
+    <div class="faq-grid fade-up">
+      <div class="faq-item"><p class="faq-q">What's the difference between Semaglutide and Tirzepatide?</p><p class="faq-a">Semaglutide is the active ingredient in Ozempic and Wegovy. Tirzepatide is a dual GLP-1/GIP agonist — the active ingredient in Zepbound and Mounjaro — and is clinically shown to produce greater weight loss. Our providers will help you choose based on your goals and health history.</p></div>
+      <div class="faq-item"><p class="faq-q">Is it injectable or a pill?</p><p class="faq-a">GLP-1 is administered as a once-weekly subcutaneous self-injection — the same method as Ozempic and Wegovy. It sounds intimidating but most members are comfortable within the first week. Our team walks you through everything.</p></div>
+      <div class="faq-item"><p class="faq-q">Who prescribes my medication?</p><p class="faq-a">Calyx works with a network of independent licensed providers who review your intake, labs, and health history before issuing your prescription. All included — no extra fees, no office visit required.</p></div>
+      <div class="faq-item"><p class="faq-q">How do the baseline labs work?</p><p class="faq-a">After signing up, you'll receive an order for baseline labs through our Labcorp or Quest network. Visit your nearest location, results come back in a few days, and your provider reviews them before prescribing. It's all coordinated for you.</p></div>
+      <div class="faq-item"><p class="faq-q">How does the switching promotion work?</p><p class="faq-a">Use code SWITCH100 at checkout. Valid for members currently on 5mg dose or higher from another GLP-1 provider. $100 off your first month only. Your provider will review your current plan and transition you smoothly.</p></div>
+      <div class="faq-item"><p class="faq-q">How do the pound-dropping rewards work?</p><p class="faq-a">Milestones are verified by our concierge team and paid as account credits toward future months. Total rewards are capped at $200 per member over a minimum 90-day membership. The tiers are $5/lb (1–10 lbs), $10/lb (10–20 lbs), and $5/lb (20–30 lbs) — adding up to $200 maximum.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="fade-up">
+    <h2>A health plan built<br>around you.</h2>
+    <p>Join Calyx today — labs, provider, medication, and support. All included. Cash pay. No insurance needed.</p>
+    <div class="cta-btns">
+      <a href="https://mishe.com/plans/calyxhealth/consultation" class="btn-cta-primary">Get started today →</a>
+      <a href="mailto:ryan@mishe.com" class="btn-cta-secondary">Contact us</a>
+    </div>
+    <p class="cta-note">No office visits required. Prescriber, labs & shipping all included.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">calyx</div>
+      <p class="footer-tagline">A health plan benefit, not a pharmacy. Cash-pay GLP-1 weight management, made accessible.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/calyx.health" class="social-btn">ig</a>
+        <a href="mailto:ryan@mishe.com" class="social-btn">@</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick links</h4>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Plans & pricing</a>
+      <a href="#rewards">Rewards</a>
+      <a href="#referral">Refer & earn</a>
+      <a href="#partner">Partner program</a>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <a href="#switch">Switch & save $100</a>
+      <a href="#">Care now pay later</a>
+      <a href="#">Community — coming soon</a>
+      <a href="#">Webinars — coming soon</a>
+    </div>
+    <div class="footer-col">
+      <h4>Network</h4>
+      <a href="#">Labcorp</a>
+      <a href="#">Quest Diagnostics</a>
+      <a href="#">Licensed compounding pharmacy</a>
+      <a href="mailto:ryan@mishe.com">ryan@mishe.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-disclaimer">Calyx Health is a cash-pay health plan benefit. Calyx works with a network of licensed clinicians specializing in weight loss and the largest compounding pharmacy in the US. GLP-1 medications are prescription drugs that must be reviewed and approved by a licensed healthcare professional. Compounded medications are not FDA-approved but are prepared by state-licensed pharmacies in accordance with applicable law. Results vary by individual. The pound-dropping rewards program is capped at $200 total per member, issued as account credits, verified by Calyx concierge, and requires a minimum 90-day active membership. Rewards tiers: $2/lb (1–10 lbs), $5/lb (10–20 lbs), $10/lb (20–30 lbs). The SWITCH100 promotion is valid for first-month only for members currently on 5mg dose or higher. Care Now Pay Later financing is provided by third-party partners subject to their terms and approval. Referral rewards subject to availability and may be modified. This website does not constitute medical advice, diagnosis, or treatment. If experiencing a medical emergency, call 911.</p>
+    <div class="footer-copy">
+      <span>© 2026 Calyx Health. All rights reserved.</span>
+      <span>Built for people who deserve better access.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 60);
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
